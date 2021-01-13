@@ -1,1 +1,21 @@
-<h1>Users#new</h1>
+{% extends "_layout.html" %}
+{% block content %}
+
+<h1>Sign Up for Nextagram!</h1>
+
+<form action="{{ url_for('users.create') }}" method="POST">    
+    <div class="form-group">
+        <label for="name">Username:</label>
+        <input type="text" name="username" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="name">Email:</label>
+        <input type="email" name="email" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="name">Password:</label>
+        <input type="password" name="password" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+</form>
+{% endblock %}
