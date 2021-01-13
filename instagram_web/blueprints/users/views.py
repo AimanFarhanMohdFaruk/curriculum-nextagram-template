@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from werkzeug.security import generate_password_hash
 from models.user import User
 
 
@@ -17,7 +18,7 @@ def create():
     user = User(
         username = request.form['username'],
         email = request.form['email'],
-        password = request.form['password']
+        password = generate_password_hash(request.form['password'])
     )
     print([user.username])
     return redirect(url_for('users.new'))
