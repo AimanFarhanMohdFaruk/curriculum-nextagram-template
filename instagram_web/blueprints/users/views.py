@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from werkzeug.security import generate_password_hash
 from models.user import User
+from werkzeug.security import generate_password_hash
+
 
 
 users_blueprint = Blueprint('users',
