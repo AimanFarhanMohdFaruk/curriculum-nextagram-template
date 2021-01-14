@@ -23,6 +23,9 @@ def create():
     if user.save():
         print("User created")
         return redirect(url_for('users.new'))
+    else:
+        print("Error in creating user")
+        return redirect(url_for('home'))
     
 
 @users_blueprint.route('/<username>', methods=["GET"])
