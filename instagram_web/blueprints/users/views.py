@@ -18,10 +18,11 @@ def create():
     user = User(
         username = request.form['username'],
         email = request.form['email'],
-        password = generate_password_hash(request.form['password'])
+        password = request.form['password']
     )
-    print([user.username])
-    return redirect(url_for('users.new'))
+    if user.save():
+        print("User created")
+        return redirect(url_for('users.new'))
     
 
 @users_blueprint.route('/<username>', methods=["GET"])
