@@ -3,7 +3,8 @@ import config
 from flask import Flask
 from models.base_model import db
 from flask_wtf import CSRFProtect
-
+from flask_login import LoginManager
+from models.user import User
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
@@ -17,6 +18,16 @@ if os.getenv('FLASK_ENV') == 'production':
 else:
     app.config.from_object("config.DevelopmentConfig")
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+login_manager.login_view = "sessions.new"
+login_manager.login_message = "Please log in"
+login_manager.login_message_category = "warning"
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 @app.before_request
 def before_request():
