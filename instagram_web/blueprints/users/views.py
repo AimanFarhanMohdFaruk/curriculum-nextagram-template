@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, escape
 from models.user import User
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
@@ -27,8 +27,7 @@ def create():
         return redirect(url_for('home'))
     else:
         flash(new_user.errors)
-        return redirect(url_for('users.new'))
-    
+        return redirect(url_for('users.new')) 
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
