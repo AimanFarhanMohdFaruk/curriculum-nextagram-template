@@ -30,6 +30,7 @@ def create():
         return redirect(url_for('users.new')) 
 
 @users_blueprint.route('/<username>', methods=["GET"])
+@login_required
 def show(username):
     user = User.get_or_none(User.username == username)
     if user:
