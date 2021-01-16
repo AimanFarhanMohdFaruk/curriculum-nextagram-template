@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, escape
 from models.user import User
-from flask_login import login_required, login_user
+from flask_login import login_required, login_user, logout_user
 from werkzeug.security import check_password_hash
 
 
@@ -35,3 +35,10 @@ def create():
     else:
         flash("User does not exist, please try again.")
         return render_template("sessions/new.html")
+
+@sessions_blueprint.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Successfully logged out.")
+    return redirect(url_for('home'))
