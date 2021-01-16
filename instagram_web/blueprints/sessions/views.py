@@ -32,3 +32,6 @@ def create():
         else:
             flash("Password authentication failed, try again.")
             return render_template("sessions/new.html")
+    else:
+        flash("User does not exist, please try again.")
+        return render_template("sessions/new.html")

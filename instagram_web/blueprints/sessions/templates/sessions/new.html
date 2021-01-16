@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Sessions New</h1>
-<form action="{{ url_for('users.create') }}" method="POST">
+<form action="{{ url_for('sessions.create') }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
     <div class="form-group">
@@ -17,4 +17,14 @@
 
     <button type="submit" class="btn btn-primary">Log In</button>
 </form>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 {% endblock %}

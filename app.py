@@ -27,7 +27,7 @@ login_manager.login_message_category = "warning"
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.get_or_none(User.id == user_id)
 
 @app.before_request
 def before_request():
