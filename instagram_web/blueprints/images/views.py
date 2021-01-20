@@ -53,9 +53,8 @@ def donation_form():
     return render_template('images/donate.html', token=token)
 
 @images_blueprint.route("/donate", methods=["POST"])
-def pay():
+def donate():
     nonce = request.form["nonce"]
-    print("ITSSSSSS HEREEEEEEEEEEEEEE ====> " + nonce)
     result = gateway.transaction.sale({
         "amount": "100.00",
         "payment_method_nonce": nonce,
@@ -67,4 +66,5 @@ def pay():
         flash("Payment Received")
         return redirect(url_for('users.show', username= current_user.username))
     else:
-        return "Payment Failed"
+        flash("Payment not successful")
+        return redirect(url_for('users.show', username= current_user.username))

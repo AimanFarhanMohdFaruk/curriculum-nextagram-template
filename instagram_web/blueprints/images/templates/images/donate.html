@@ -4,9 +4,9 @@
   <script src="https://js.braintreegateway.com/web/dropin/1.25.0/js/dropin.min.js"></script>
 
     <div id="my-container"></div>
-    <button id="my-button">Pay</button>
+    <button id="my-button" class="btn btn-primary">Donate</button>
 
-    <form id="nonce-form" action="{{url_for('images.pay')}}" method="POST">
+    <form id="nonce-form" action="{{url_for('images.donate')}}" method="POST">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input id="nonce" type="hidden" name="nonce" >
     </form>

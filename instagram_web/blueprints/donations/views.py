@@ -18,8 +18,8 @@ def show():
     token = gateway.client_token.generate()
     return render_template('donations/show.html', token=token)
 
-@donations_blueprint.route("/receive_payment", methods=["POST"])
-def pay():
+@donations_blueprint.route("/donate", methods=["POST"])
+def donate():
     nonce = request.form["nonce"]
     print("ITSSSSSS HEREEEEEEEEEEEEEE ====> " + nonce)
     result = gateway.transaction.sale({
