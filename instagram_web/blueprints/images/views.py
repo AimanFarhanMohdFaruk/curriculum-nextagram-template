@@ -17,11 +17,6 @@ images_blueprint = Blueprint('images',
 def new():
     return render_template('images/new.html')
 
-@images_blueprint.route('/show', methods=['GET'])
-def show():
-    token = gateway.client_token.generate()
-    return render_template('images/show.html', token=token)
-
 @images_blueprint.route('/<id>/uploaduserimg', methods=['POST'])
 @login_required
 def upload_user_image(id):
@@ -52,7 +47,12 @@ def upload_user_image(id):
         flash("User not found")
         return redirect(url_for('home'))
 
-@images_blueprint.route("/receive_payment", methods=["POST"])
+@images_blueprint.route('/donate', methods=['GET'])
+def donation_form():
+    token = gateway.client_token.generate()
+    return render_template('images/donate.html', token=token)
+
+@images_blueprint.route("/donate", methods=["POST"])
 def pay():
     nonce = request.form["nonce"]
     print("ITSSSSSS HEREEEEEEEEEEEEEE ====> " + nonce)

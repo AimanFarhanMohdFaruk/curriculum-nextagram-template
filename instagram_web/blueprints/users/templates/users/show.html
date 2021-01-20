@@ -23,7 +23,7 @@
         {% for image in user.images %}
         <div class="card d-flex flex-col" style="width: 300px; margin:10px;">
             <img src="{{image.full_image_path}}" style="height: 200px; width: 200px; margin:10px;"/>
-           <a href="{{url_for('images.show')}}"> <button class="btn btn-primary"type="button">Donate</button></a>         
+           <a href="{{url_for('images.donation_form')}}"> <button class="btn btn-primary"type="button">Donate</button></a>         
         </div>
         {% endfor %}  
     </div>
