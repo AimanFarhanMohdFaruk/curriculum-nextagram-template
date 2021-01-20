@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from models.user import User
 from flask_login import login_required, login_user, current_user
 from models.user_images import UserImages
+from instagram_web.util.helpers import gateway
 
 
 donations_blueprint = Blueprint('donations',
@@ -9,19 +10,14 @@ donations_blueprint = Blueprint('donations',
                             template_folder='templates')
 
 
-@donations_blueprint.route('/new', methods=['GET'])
-def new():
-    return render_template('donations/new.html')
-
-@donations_blueprint.route('/show', methods=['GET'])
-def show():
+@donations_blueprint.route('/<image_id>/new', methods=['GET'])
+def donation_form(image_id):
     token = gateway.client_token.generate()
-    return render_template('donations/show.html', token=token)
+    return render_template('donations/new.html', token=token, image_id = image_id)
 
-@donations_blueprint.route("/donate", methods=["POST"])
+@donations_blueprint.route("/<image_id>/donate", methods=["POST"])
 def donate():
     nonce = request.form["nonce"]
-    print("ITSSSSSS HEREEEEEEEEEEEEEE ====> " + nonce)
     result = gateway.transaction.sale({
         "amount": "100.00",
         "payment_method_nonce": nonce,
@@ -33,4 +29,5 @@ def donate():
         flash("Payment Received")
         return redirect(url_for('users.show', username= current_user.username))
     else:
-        return "Payment Failed"
+        flash("Payment not successful")
+        return redirect(url_for('users.show', username= current_user.username))
