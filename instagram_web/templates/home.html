@@ -4,13 +4,13 @@
   Homepage
 {% endblock %}
 
-
 {% block content %}
-  <h1>Hello!</h1>
+<div class="container">
+    <h1>Hello!</h1>
 
-{% if current_user.is_authenticated %}
-  <h1>Logged in as user {{current_user.username}}</h1>
-{% endif %}
+  {% if current_user.is_authenticated %}
+    <h1>Logged in as user {{current_user.username}}</h1>
+  {% endif %}
 
   <h4>All Users:</h4>
   {% for user in users %}
@@ -21,6 +21,8 @@
     <img src="{{image.full_image_path}}" style="height: 200px; width: 200px;"/>
     {% endfor %}
   {% endfor %}
+</div>
+
 
 {% endblock %}
 
