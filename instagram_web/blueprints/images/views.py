@@ -4,6 +4,7 @@ from flask_login import login_required, login_user, current_user
 from instagram_web.util.helpers import upload_file_to_s3
 from werkzeug import secure_filename
 from models.user_images import UserImages
+from instagram_web.util.helpers import gateway
 
 
 
@@ -15,6 +16,11 @@ images_blueprint = Blueprint('images',
 @images_blueprint.route('/new', methods=['GET'])
 def new():
     return render_template('images/new.html')
+
+@images_blueprint.route('/show', methods=['GET'])
+def show():
+    token = gateway.client_token.generate()
+    return render_template('images/show.html', token=token)
 
 @images_blueprint.route('/<id>/uploaduserimg', methods=['POST'])
 @login_required
@@ -45,3 +51,20 @@ def upload_user_image(id):
     else:
         flash("User not found")
         return redirect(url_for('home'))
+
+@images_blueprint.route("/receive_payment", methods=["POST"])
+def pay():
+    nonce = request.form["nonce"]
+    print("ITSSSSSS HEREEEEEEEEEEEEEE ====> " + nonce)
+    result = gateway.transaction.sale({
+        "amount": "100.00",
+        "payment_method_nonce": nonce,
+        "options": {
+            "submit_for_settlement": True
+        }   
+    })
+    if result.is_success:
+        flash("Payment Received")
+        return redirect(url_for('users.show', username= current_user.username))
+    else:
+        return "Payment Failed"

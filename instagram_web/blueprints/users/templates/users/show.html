@@ -7,7 +7,6 @@
         <img src="{{user.full_image_path}}" style="height: 500px; width: 500px;"/>   
     </div>
 
-
     <form action="{{ url_for('images.upload_user_image', id=user.id) }}" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
@@ -17,12 +16,19 @@
             <br></br>
         <button class="btn btn-primary"type="submit">Upload</button>
     </form>
+
     <br></br>
-    <div style="margin-bottom: 20px;">
-    {% for image in user.images %}
-        <img src="{{image.full_image_path}}" style="height: 200px; width: 200px;"/>
-    {% endfor %}  
+
+    <div style="margin-bottom: 20px;" class="container">
+        {% for image in user.images %}
+        <div class="card d-flex flex-col" style="width: 300px; margin:10px;">
+            <img src="{{image.full_image_path}}" style="height: 200px; width: 200px; margin:10px;"/>
+           <a href="{{url_for('images.show')}}"> <button class="btn btn-primary"type="button">Donate</button></a>         
+        </div>
+        {% endfor %}  
     </div>
+
+
 </div>
 
 {% endblock %}

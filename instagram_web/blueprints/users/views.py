@@ -4,6 +4,7 @@ from flask_login import login_required, login_user, current_user
 from instagram_web.util.helpers import upload_file_to_s3
 from werkzeug import secure_filename
 from models import user_images
+from instagram_web.util.helpers import gateway
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -39,8 +40,7 @@ def show(username):
     else:
         flash("User not found")
         return redirect(url_for("home"))
-
-
+        
 @users_blueprint.route('/', methods=["GET"])
 def index():
     return "Hello World"
