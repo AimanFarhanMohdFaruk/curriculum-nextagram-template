@@ -1,8 +1,28 @@
 {% extends "_layout.html" %}
 {% block content %}
 
-<h1>Welcome to your profile, {{user.username}}</h1>
-<img src="{{user.full_image_path}}"/>
+<div class="container">
+    <div>
+        <h1>Welcome to your profile, {{user.username}}</h1>
+        <img src="{{user.full_image_path}}" style="height: 500px; width: 500px;"/>   
+    </div>
 
+
+    <form action="{{ url_for('images.upload_user_image', id=user.id) }}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+        <label for="user_image">Upload Images</label>
+            <br></br>
+            <input type="file" name="user_image">
+            <br></br>
+        <button class="btn btn-primary"type="submit">Upload</button>
+    </form>
+    <br></br>
+    <div style="margin-bottom: 20px;">
+    {% for image in user.images %}
+        <img src="{{image.full_image_path}}" style="height: 200px; width: 200px;"/>
+    {% endfor %}  
+    </div>
+</div>
 
 {% endblock %}

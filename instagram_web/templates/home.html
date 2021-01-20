@@ -4,8 +4,6 @@
   Homepage
 {% endblock %}
 
-{% block header %}
-{% endblock %}
 
 {% block content %}
   <h1>Hello!</h1>
@@ -14,16 +12,15 @@
   <h1>Logged in as user {{current_user.username}}</h1>
 {% endif %}
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
+  <h4>All Users:</h4>
+  {% for user in users %}
+    <li>
+      <a href="{{url_for('users.show', username=user.username)}}">{{user.username}}</a>
+    </li>
+    {% for image in user.images %}
+    <img src="{{image.full_image_path}}" style="height: 200px; width: 200px;"/>
     {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
+  {% endfor %}
 
 {% endblock %}
 
