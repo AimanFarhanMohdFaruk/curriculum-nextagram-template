@@ -9,6 +9,6 @@ donations_blueprint = Blueprint('donations',
                             template_folder='templates')
 
 
-@images_blueprint.route('/new', methods=['GET'])
+@donations_blueprint.route('/new', methods=['GET'])
 def new():
     return render_template('donations/new.html')
