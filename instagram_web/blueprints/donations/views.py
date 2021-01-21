@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session, escape
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from decimal import Decimal
-from models.user import User
-from flask_login import login_required, login_user, current_user
+from flask_login import login_required, current_user
 from models.user_images import UserImages
 from models.donate import Donation
 from instagram_web.util.helpers import gateway
