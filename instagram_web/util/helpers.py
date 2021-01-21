@@ -2,6 +2,7 @@ import boto3, botocore
 from app import app
 import braintree
 import os
+import requests
 
 s3 = boto3.client (
     "s3",
@@ -34,3 +35,12 @@ gateway = braintree.BraintreeGateway(
         private_key=os.environ.get("PRIVATE_KEY")
     )
 )
+
+def send_donation_email():
+    return requests.post(
+        "https://api.mailgun.net/v3/sandbox3cdc2b1c1ea54277bfb5965aafe68daa.mailgun.org",
+        auth=("api", os.environ.get("MAILGUN_API_KEY")),
+        data={"from": "Excited User <mailgun@sandbox3cdc2b1c1ea54277bfb5965aafe68daa.mailgun.org>",
+              "to": ["Aiman", "aimanfaruk98@gmail.com"],
+              "subject": "Donation Confirmed!",
+              "text": "You have donated RM10.00!"})

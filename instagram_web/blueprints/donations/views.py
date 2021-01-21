@@ -3,7 +3,7 @@ from decimal import Decimal
 from flask_login import login_required, current_user
 from models.user_images import UserImages
 from models.donate import Donation
-from instagram_web.util.helpers import gateway
+from instagram_web.util.helpers import gateway, send_donation_email
 
 
 donations_blueprint = Blueprint('donations',
@@ -28,6 +28,7 @@ def donate(image_id):
     })
     if result.is_success:
         flash("Payment Received")
+        send_donation_email()
         image = UserImages.get_by_id(image_id)
         donation = Donation(amount=Decimal(10) ,image=image)
         donation.save()
