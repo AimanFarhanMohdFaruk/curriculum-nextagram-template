@@ -1,8 +1,9 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-<h1>Sessions New</h1>
-<form action="{{ url_for('sessions.create') }}" method="POST">
+<div class="container">
+  <h1>Sessions New</h1>
+  <form action="{{ url_for('sessions.create') }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
     <div class="form-group">
@@ -15,16 +16,18 @@
         <input type="password" name="password" class="form-control"/>
     </div>
 
-    <button type="submit" class="btn btn-primary">Log In</button>
-</form>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+    <button type="submit" class="btn btn-primary">Log In</button> <span><a href="{{url_for('sessions.google_login')}}"><button type='button' class='btn btn-primary'>Log In with Google Account</button></a></span>
+  </form>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+</div>
+
 
 {% endblock %}
