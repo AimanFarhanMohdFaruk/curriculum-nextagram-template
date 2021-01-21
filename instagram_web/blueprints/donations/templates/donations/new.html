@@ -6,7 +6,7 @@
       <div id="my-container"></div>
       <button id="my-button" class="btn btn-primary">Donate</button>
   
-      <form id="nonce-form" action="{{url_for('donations.donate')}}" method="POST">
+      <form id="nonce-form" action="{{url_for('donations.donate', image_id=image_id)}}" method="POST">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <input id="nonce" type="hidden" name="nonce" >
       </form>

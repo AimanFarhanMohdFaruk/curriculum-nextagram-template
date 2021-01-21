@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, escape
+from decimal import Decimal
 from models.user import User
 from flask_login import login_required, login_user, current_user
 from models.user_images import UserImages
+from models.donate import Donation
 from instagram_web.util.helpers import gateway
 
 
@@ -11,12 +13,12 @@ donations_blueprint = Blueprint('donations',
 
 
 @donations_blueprint.route('/<image_id>/new', methods=['GET'])
-def donation_form(image_id):
+def new(image_id):
     token = gateway.client_token.generate()
     return render_template('donations/new.html', token=token, image_id = image_id)
 
 @donations_blueprint.route("/<image_id>/donate", methods=["POST"])
-def donate():
+def donate(image_id):
     nonce = request.form["nonce"]
     result = gateway.transaction.sale({
         "amount": "100.00",
@@ -27,6 +29,9 @@ def donate():
     })
     if result.is_success:
         flash("Payment Received")
+        image = UserImages.get_by_id(image_id)
+        donation = Donation(amount=Decimal(10) ,image=image)
+        donation.save()
         return redirect(url_for('users.show', username= current_user.username))
     else:
         flash("Payment not successful")
