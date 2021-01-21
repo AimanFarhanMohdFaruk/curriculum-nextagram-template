@@ -32,8 +32,9 @@
     <div style="margin-bottom: 20px;" class="container">
         {% for image in user.images %}
         <div class="card d-flex flex-col" style="width: 300px; margin:10px;">
-            <img src="{{image.full_image_path}}" style="height: 200px; width: 200px; margin:10px;"/>
-           <a href="{{url_for('donations.new', image_id=image.id)}}"> <button class="btn btn-primary"type="button">Donate</button></a>         
+          <img src="{{image.full_image_path}}" style="height: 200px; width: 200px; margin:10px;"/>
+          <p>Donations Received: {{ image.donations | sum(attribute="amount") }}</p>
+          <a href="{{url_for('donations.new', image_id=image.id)}}"> <button class="btn btn-primary"type="button">Donate</button></a>         
         </div>
         {% endfor %}  
     </div>
