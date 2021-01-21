@@ -41,7 +41,7 @@ def upload_user_image(id):
                 return redirect(url_for('users.show', username = current_user.username))
         else:
             flash("Unauthorised to edit other user's profile")
-            return redirect(url_for('sessions/new'))
+            return redirect(url_for('sessions.new'))
     else:
         flash("User not found")
         return redirect(url_for('home'))

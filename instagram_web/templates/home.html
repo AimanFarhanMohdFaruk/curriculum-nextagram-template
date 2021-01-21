@@ -12,17 +12,23 @@
     <h1>Logged in as user {{current_user.username}}</h1>
   {% endif %}
 
-  <h4>All Users:</h4>
   {% for user in users %}
-    <li>
-      <a href="{{url_for('users.show', username=user.username)}}">{{user.username}}</a>
-    </li>
-    {% for image in user.images %}
-    <img src="{{image.full_image_path}}" style="height: 200px; width: 200px;"/>
-    {% endfor %}
+  <div class="container" style="margin-top:30px;">
+    <div class="row justify-content-start">
+      <div class="col-3">
+        <h3>{{user.username}}</h3>
+        <a href="{{url_for('users.show', username=user.username)}}"><button class="btn btn-primary">View Profile</button></a>
+      </div>
+
+      <div class="col-9">
+      {% for image in user.images %}
+        <img src="{{image.full_image_path}}" style="height: 200px; width: 200px; margin:10px; border-radius: 10px;"/>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
   {% endfor %}
+
 </div>
-
-
 {% endblock %}
 
