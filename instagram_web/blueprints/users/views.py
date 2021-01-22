@@ -4,7 +4,6 @@ from flask_login import login_required, login_user, current_user
 from instagram_web.util.helpers import upload_file_to_s3
 from werkzeug import secure_filename
 from instagram_web.util.helpers import gateway
-from models.follow import Follow
 
 
 users_blueprint = Blueprint('users',
@@ -139,16 +138,5 @@ def upload_file(id):
 @users_blueprint.route('/<user_id>/follow', methods=['POST'])
 @login_required
 def follow(user_id):
-    if user_id != current_user.id:
-        fan = User.get_by_id(user_id)
-        follow = Follow(follower = current_user, following = fan)
-        if follow.save():
-            flash("Successfully followed user.")
-            return redirect(url_for('home'))
-        else:
-            flash("Unable to follow user.")
-            return redirect(url_for('home'))
-    else:
-        flash("Unable to follow your own profile.")
-        return redirect(url_for('home'))
+    pass
             
