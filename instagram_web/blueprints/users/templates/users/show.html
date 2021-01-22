@@ -12,10 +12,13 @@
 {% endwith %}
 
 <div class="container">
-    <div>
-        <h1>Welcome to your profile, {{user.username}}</h1>
-        <img src="{{user.full_image_path}}" style="height: 500px; width: 500px;"/>   
+    <div class="d-flex flex-column align-items-center">
+        <h1>@{{user.username}}</h1>
+        <img src="{{user.full_image_path}}" style="height: 200px; width: 200px;"/>
+        <a href="{{url_for('users.follow', user_id=user.id)}}"></a><button class='btn btn-primary' style="margin-top:10px;" type="button">Follow</button></a>   
     </div>
+
+    <br></br>
 
     <form action="{{ url_for('images.upload_user_image', id=user.id) }}" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

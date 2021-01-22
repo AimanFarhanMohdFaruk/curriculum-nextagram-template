@@ -3,8 +3,9 @@ from models.user import User
 from flask_login import login_required, login_user, current_user
 from instagram_web.util.helpers import upload_file_to_s3
 from werkzeug import secure_filename
-from models import user_images
 from instagram_web.util.helpers import gateway
+from models.follow import Follow
+
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -15,7 +16,7 @@ users_blueprint = Blueprint('users',
 def new():
     return render_template('users/new.html')
 
-
+#CREATE NEW USER
 @users_blueprint.route('/create', methods=['POST'])
 def create():
     params = request.form
@@ -31,6 +32,7 @@ def create():
         flash(new_user.errors)
         return redirect(url_for('users.new')) 
 
+#SHOW USER PROFILE
 @users_blueprint.route('/<username>', methods=["GET"])
 @login_required
 def show(username):
@@ -45,7 +47,7 @@ def show(username):
 def index():
     return "Hello World"
 
-
+#EDIT USER PROFILE, USERNAME, PASSWORD, EMAIL PAGE
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 def edit(id):
     user = User.get_by_id(id)
@@ -60,6 +62,7 @@ def edit(id):
         flash("User not found")
         return redirect(url_for('home'))
 
+#FUNC TO UPDATE EDIT CHANGES
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
     user = User.get_or_none(User.id == id)
@@ -88,7 +91,7 @@ def update(id):
         flash("User not found")
         return redirect(url_for("home"))
 
-
+#FORM TO UPDATE USRE PROFILE IMG
 @users_blueprint.route('/<id>/profileimg', methods=["GET"])
 def profileimg(id):
     user = User.get_by_id(id)
@@ -100,6 +103,7 @@ def profileimg(id):
     else:
         return redirect('home')
 
+#UPLOAD PROFILEIMG FUNCTION
 @users_blueprint.route('/<id>/create', methods=['POST'])
 @login_required
 def upload_file(id):
@@ -129,5 +133,22 @@ def upload_file(id):
             return redirect(url_for('sessions.new'))
     else:
         flash("User not found")
+        return redirect(url_for('home'))
+
+#USERS FOLLOW FUNCTION
+@users_blueprint.route('/<user_id>/follow', methods=['POST'])
+@login_required
+def follow(user_id):
+    if user_id != current_user.id:
+        fan = User.get_by_id(user_id)
+        follow = Follow(follower = current_user, following = fan)
+        if follow.save():
+            flash("Successfully followed user.")
+            return redirect(url_for('home'))
+        else:
+            flash("Unable to follow user.")
+            return redirect(url_for('home'))
+    else:
+        flash("Unable to follow your own profile.")
         return redirect(url_for('home'))
             

@@ -21,7 +21,24 @@ class User(BaseModel, UserMixin):
             return app.config.get("S3_LOCATION") + self.image_path
         else:
             return ""
+    
+    def get_followers(self):
+        return (
+            User.select()
+            .join(Follow, on=(User.id == Follow.follower_id))
+            .where(
+                Follow.following == self
+            )    
+        )
 
+    def get_followings(self):
+        return (
+            User.select()
+            .join(Follow, on=(User.id == Follow.following_id))
+            .where(
+                Follow.follower == self
+            )    
+        )
 
     def validate(self):
         existing_user_email = User.get_or_none(User.email == self.email)
