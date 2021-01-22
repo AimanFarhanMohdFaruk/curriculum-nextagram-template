@@ -15,7 +15,10 @@
     <div class="d-flex flex-column align-items-center">
         <h1>@{{user.username}}</h1>
         <img src="{{user.full_image_path}}" style="height: 200px; width: 200px;"/>
-        <a href="{{url_for('users.follow', user_id=user.id)}}"><button class='btn btn-primary' style="margin-top:10px;" type="button">Follow</button></a>   
+        <a href="{{url_for('users.follow', user_id=user.id)}}"><button class='btn btn-primary' style="margin-top:10px;" type="button">Follow</button></a>
+        {% if current_user.is_authenticated %}
+        <a href="{{url_for('users.edit', id=current_user.id)}}"><button class='btn btn-primary' style="margin-top:10px;" type="button">Edit Profile</button></a>
+        {% endif %}   
     </div>
 
     <br></br>

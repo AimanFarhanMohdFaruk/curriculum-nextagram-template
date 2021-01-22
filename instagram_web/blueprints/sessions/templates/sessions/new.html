@@ -16,7 +16,10 @@
         <input type="password" name="password" class="form-control"/>
     </div>
 
-    <button type="submit" class="btn btn-primary">Log In</button> <span><a href="{{url_for('sessions.google_login')}}"><button type='button' class='btn btn-primary'>Log In with Google Account</button></a></span>
+    <button type="submit" class="btn btn-primary">Log In</button> 
+    <span><a href="{{url_for('sessions.google_login')}}"><button type='button' class='btn btn-primary'>Log In with Google Account</button></a></span>
+    <span><a href="{{url_for('users.new')}}"><button type='button' class='btn btn-primary'>Not a user? Sign up here</button></a></span>
+
   </form>
   {% with messages = get_flashed_messages() %}
     {% if messages %}

@@ -76,6 +76,12 @@ def update(id):
             password = params.get('password')
             if len(password) > 0:
                 user.password = password
+
+            private = params.get('private')
+            if private == "True":
+                user.private = True
+            else:
+                user.private = False
             
             if user.save():
                 flash("Successfully update profile information")
