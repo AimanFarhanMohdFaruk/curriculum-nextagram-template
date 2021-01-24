@@ -28,6 +28,18 @@
       </div>
       <button type="submit" class="btn btn-primary">Confirm Changes</button>
   </form>
+  <br></br>
+  <h1>Upload Profile Image</h1>
+
+  <form action="{{ url_for('users.upload_file', id=user.id) }}" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+      <label for="profile_image">Upload Your File</label>
+          <br></br>
+          <input type="file" name="profile_image">
+          <br></br>
+      <button type="submit">Upload</button>
+  </form>
 
   {% with messages = get_flashed_messages() %}
     {% if messages %}
