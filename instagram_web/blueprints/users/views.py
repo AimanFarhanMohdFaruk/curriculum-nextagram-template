@@ -25,6 +25,7 @@ def create():
         password = params.get('password')
     )
     if new_user.save():
+        login_user(new_user)
         flash("User created")
         return redirect(url_for('home'))
     else:
