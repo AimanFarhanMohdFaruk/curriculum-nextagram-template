@@ -6,27 +6,25 @@
 
 {% block content %}
 <div class="container">
-    <h1>Hello!</h1>
-
   {% if current_user.is_authenticated %}
-    <h1>Logged in as user {{current_user.username}}</h1>
+    <h1>Welcome @{{current_user.username}}</h1>
   {% endif %}
 
   {% for user in users %}
-  <div class="container" style="margin-top:30px;">
-    <div class="row justify-content-start">
-      <div class="col-3">
-        <h3>{{user.username}}</h3>
-        <a href="{{url_for('users.show', username=user.username)}}"><button class="btn btn-primary">View Profile</button></a>
-      </div>
+    <div class="container" style="margin-top:30px;">
+      <div class="row justify-content-start">
+        <div class="col-3">
+          <h3>{{user.username}}</h3>
+          <a href="{{url_for('users.show', username=user.username)}}"><button class="btn btn-primary">View Profile</button></a>
+        </div>
 
-      <div class="col-9">
-      {% for image in user.images %}
-        <img src="{{image.full_image_path}}" style="height: 200px; width: 200px; margin:10px; border-radius: 10px;"/>
-      {% endfor %}
+        <div class="col-9">
+        {% for image in user.images %}
+          <img src="{{image.full_image_path}}" style="height: 200px; width: 200px; margin:10px; border-radius: 10px;"/>
+        {% endfor %}
+        </div>
       </div>
     </div>
-  </div>
   {% endfor %}
 
 </div>
