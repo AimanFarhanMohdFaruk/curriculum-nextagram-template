@@ -57,15 +57,16 @@ class User(BaseModel, UserMixin):
     @hybrid_property
     def following_requests(self):
         from models.follow import Follow
-        followings = Follow.select(Follow.following).where(Follow.follower == self.id, Follow.following.is_approved == False)
+        followings = Follow.select(Follow.following).where(Follow.follower == self.id, Follow.is_approved == False)
         return User.select().where(User.id.in_(followings))
     
     @hybrid_property
     def follower_requests(self):
         from models.follow import Follow
-        followers = Follow.select(Follow.follower).where(Follow.following == self.id, Follow.following.is_approved == False)
+        followers = Follow.select(Follow.follower).where(Follow.following == self.id, Follow.is_approved == False)
+        return User.select().where(User.id.in_(followers))
 
-    @hybrid_property
+    
     def approve_requests(self, follower):
         from models.follow import Follow
         # GET the relationship. This would return the follow relationship between follower and following. Direct get to that database, then set is_approved = True to accept

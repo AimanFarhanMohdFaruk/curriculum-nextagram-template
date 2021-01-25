@@ -26,7 +26,7 @@
 {% for request in current_user.follower_requests %} 
     <li>    
         {{request.username}}
-        <form action="{{url_for('users.approve_requests', follower_id = request.id)}}" method="POST">
+        <form action="{{url_for('users.approve', follower_id=request.id)}}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="submit" value="Approve" class="btn btn-primary" style="margin-top:10px;"/>
         </form>        

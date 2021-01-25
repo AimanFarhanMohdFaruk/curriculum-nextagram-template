@@ -174,3 +174,15 @@ def unfollow(following_id):
 @login_required
 def show_request():
     return render_template("users/request.html")
+
+@users_blueprint.route('/<follower_id>/approve', methods=["POST"])
+@login_required
+def approve(follower_id):
+    follower = User.get_by_id(follower_id)
+
+    if current_user.approve_requests(follower):
+        flash(f"Approved follow request by {follower.username}", "info")
+        return redirect(url_for('home'))
+    else:
+        flash("Error in approving follow request")
+        return redirect(url_for('home'))

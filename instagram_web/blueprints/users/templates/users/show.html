@@ -19,6 +19,7 @@
        
         {% if user.id==current_user.id %}
         <a href="{{url_for('users.edit', id=current_user.id)}}"><button class='btn btn-primary' style="margin-top:10px;" type="button">Edit Profile</button></a>
+        <a href="{{url_for('users.show_request')}}"><button class='btn btn-primary' style="margin-top:10px;" type="button">Show Requests</button></a>
         {% else %}
           {% if current_user.follow_status(user) %}
             <form action="{{url_for('users.unfollow', following_id = user.id)}}" method="POST">
