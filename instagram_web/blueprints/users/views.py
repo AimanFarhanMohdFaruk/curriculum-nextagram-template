@@ -141,9 +141,36 @@ def upload_file(id):
         flash("User not found")
         return redirect(url_for('home'))
 
-#USERS FOLLOW FUNCTION
-@users_blueprint.route('/<user_id>/follow', methods=['POST'])
+# USERS FOLLOW FUNCTION
+@users_blueprint.route('/<following_id>/follow', methods=['POST'])
 @login_required
-def follow(user_id):
-    pass
+def follow(following_id):
+    following = User.get_by_id(following_id)
+
+    if current_user.follow(following):
+        if current_user.follow_status(following).is_approved:
+            flash(f"Successfully followed {following.username}!", "info")
+        else:
+            flash(f"Your request to follow {following.username} has been sent", "info")
+        return redirect(url_for('users.show', username=following.username))
+    else:
+        flash("Unable to follow user", "danger")
+        return render_template(url_for('users.show', username = current_user.username))
+
             
+@users_blueprint.route('/<following_id>/unfollow', methods=["POST"])
+@login_required
+def unfollow(following_id):
+    following = User.get_by_id(following_id)
+
+    if current_user.unfollow(following):
+        flash(f"You have unfollowed {following.username}", "primary")
+        return redirect(url_for('home'))
+    else:
+        flash("Error occurred in unfollowing user", "danger")
+        return redirect(url_for('users.show', username=current_user.username))
+
+@users_blueprint.route('/request', methods = ["GET"])
+@login_required
+def show_request():
+    return render_template("users/request.html")

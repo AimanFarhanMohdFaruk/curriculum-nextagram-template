@@ -4,6 +4,7 @@ import peewee as pw
 
 
 class Follow(BaseModel):
-    follower = pw.ForeignKeyField(User, backref= 'followings')
-    following = pw.ForeignKeyField(User, backref= 'followers')
+    follower = pw.ForeignKeyField(User, backref= 'followings', on_delete='CASCADE')
+    following = pw.ForeignKeyField(User, backref= 'followers', on_delete='CASCADE')
+    is_approved = pw.BooleanField(default=False)
 

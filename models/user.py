@@ -22,25 +22,58 @@ class User(BaseModel, UserMixin):
             return app.config.get("S3_LOCATION") + self.image_path
         else:
             return ""
-    
+
+    def follow(self,following):
+        from models.follow import Follow
+
+        if self.follow_status(following) == None:
+            relationship = Follow(follower = self.id, following = following)
+            if not following.private:
+                relationship.is_approved  = True
+            return relationship.save()
+        else:
+            return 0
+
+    def unfollow(self,following):
+        from models.follow import Follow
+        return Follow.delete().where(Follow.follower == self.id, Follow.following == following).execute()
+
+    def follow_status(self, following):
+        from models.follow import Follow
+        return Follow.get_or_none(Follow.follower == self.id , Follow.following == following.id )
+
+    @hybrid_property    
     def get_followers(self):
-        return (
-            User.select()
-            .join(Follow, on=(User.id == Follow.follower_id))
-            .where(
-                Follow.following == self
-            )    
-        )
+        from models.follow import Follow
+        followers = Follow.select(Follow.follower).where(Follow.following == self.id, Follow.is_approved == True)
+        return User.select().where(User.id.in_(followers))
 
+    @hybrid_property
     def get_followings(self):
-        return (
-            User.select()
-            .join(Follow, on=(User.id == Follow.following_id))
-            .where(
-                Follow.follower == self
-            )    
-        )
+        from models.follow import Follow
+        followings = Follow.select(Follow.following).where(Follow.follower == self.id, Follow.is_approved == True)
+        return User.select().where(User.id.in_(followings))
 
+    @hybrid_property
+    def following_requests(self):
+        from models.follow import Follow
+        followings = Follow.select(Follow.following).where(Follow.follower == self.id, Follow.following.is_approved == False)
+        return User.select().where(User.id.in_(followings))
+    
+    @hybrid_property
+    def follower_requests(self):
+        from models.follow import Follow
+        followers = Follow.select(Follow.follower).where(Follow.following == self.id, Follow.following.is_approved == False)
+
+    @hybrid_property
+    def approve_requests(self, follower):
+        from models.follow import Follow
+        # GET the relationship. This would return the follow relationship between follower and following. Direct get to that database, then set is_approved = True to accept
+        relationship = follower.follow_status(self)
+        relationship.is_approved = True
+        return relationship.save()
+
+    
     def validate(self):
         existing_user_email = User.get_or_none(User.email == self.email)
         if existing_user_email and existing_user_email.id != self.id:
