@@ -71,8 +71,13 @@ def update(id):
         if current_user.id == int(id):
             params = request.form
 
-            user.username = params.get('username')
-            user.email = params.get('email')
+            username = params.get('username')
+            if len(username) > 0:
+                user.username = username
+            
+            email = params.get('email')
+            if len(email) > 0:
+                user.email = email
 
             password = params.get('password')
             if len(password) > 0:
